@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>WebServer</title>
+    </head>
+    <style>
+        body {
+            background-image: url("UI/background.png");
+            background-attachment: fixed;
+            background-position: left top;
+        }
+        .characters {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .stars {
+            width: 150px;
+            height: 30px;
+            object-fit: cover;
+        }
+    </style>
+    <body>
+    <div id="username">
+        <span style="border: 1px solid black; padding: 5px; font-size: 24px; background-color: black; color: white;"></span>
+    </div>
+    <br>
+    <div align="center">
+        <button onclick="getSingleImage()" style="padding: 0; border: none; background-color: transparent; margin: 0;">
+            <img src="UI/single_draw.jpg" alt="Button Image" style="width: 150px; height: 50px;" >
+        </button>
+        <br/>
+        <table>
+            <tr>
+                <td><img id="singleImage" class="characters" src=""></td>
+            </tr>
+            <tr>
+                <td><img id="singlestars" class="stars" src=""></td>
+            </tr>
+        </table>
+        <br/>
+        <script>
+            function getSingleImage() {
+                var xmlhttp = new XMLHttpRequest();
+                var username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 3 && this.status == 200) {
+                        var c_imgElement = document.getElementById("singleImage");
+                        var s_imgElement = document.getElementById("singlestars");
+                        var urls = this.responseText.split("\n")
+                        c_imgElement.src = urls[0];
+                        s_imgElement.src = urls[1];
+                        xmlhttp.abort();
+                    }
+                };
+                xmlhttp.open("GET", "/getRandomImage_" + encodeURIComponent(username), true);
+                xmlhttp.send();
+            }
+        </script>
+    </div>
+    <br/>
+
+
+    <div align="center"><button onclick="getMultiImage(10)" style="padding: 0; border: none; background-color: transparent; margin: 0;">
+        <img src="UI/multi_draw.jpg" alt="Button Image" style="width: 150px; height: 50px;" >
+        </button>
+        <br/>
+        <table>
+            <tr>
+                <td><img id="randomImage1" class="characters" src=""></td>
+                <td><img id="randomImage2" class="characters" src=""></td>
+                <td><img id="randomImage3" class="characters" src=""></td>
+                <td><img id="randomImage4" class="characters" src=""></td>
+                <td><img id="randomImage5" class="characters" src=""></td>
+            </tr>
+            <tr>
+                <td><img id="stars1" class="stars" src=""></td>
+                <td><img id="stars2" class="stars" src=""></td>
+                <td><img id="stars3" class="stars" src=""></td>
+                <td><img id="stars4" class="stars" src=""></td>
+                <td><img id="stars5" class="stars" src=""></td>
+            </tr>
+            <tr>
+                <td><img id="randomImage6" class="characters" src=""></td>
+                <td><img id="randomImage7" class="characters" src=""></td>
+                <td><img id="randomImage8" class="characters" src=""></td>
+                <td><img id="randomImage9" class="characters" src=""></td>
+                <td><img id="randomImage10" class="characters" src=""></td>
+            </tr>
+            <tr>
+                <td><img id="stars6" class="stars" src=""></td>
+                <td><img id="stars7" class="stars" src=""></td>
+                <td><img id="stars8" class="stars" src=""></td>
+                <td><img id="stars9" class="stars" src=""></td>
+                <td><img id="stars10" class="stars" src=""></td>
+            </tr>
+        </table>
+        <form action="8" method="post">
+            <div align="center"><button type="submit">你的库存</button></div>
+        <script>
+            function getMultiImage() {
+                var xmlhttp = new XMLHttpRequest();
+                var username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                xmlhttp.onreadystatechange = function()
+                {
+                    if (this.readyState == 3 && this.status == 200)
+                    {
+                        var urls = this.responseText.split("\n");
+                        for (var i = 1; i <= 10; i++)
+                        {
+                            var c_imgElement = document.getElementById("randomImage" + i);
+                            var s_imgElement = document.getElementById("stars" + i);
+                            c_imgElement.src = urls[2*(i-1)];
+                            s_imgElement.src = urls[2*(i-1)+1];
+                        }
+                        xmlhttp.abort();
+                    }
+                };
+                xmlhttp.open("GET", "/getMultiRandomImage_" + encodeURIComponent(username), true);
+                xmlhttp.send();
+            }
+        </script>
+        <script>
+            var username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+            // 在页面上展示用户名
+            var usernameSpan = document.querySelector("#username span");
+            if (username) {
+                usernameSpan.textContent = "当前用户：" + username;
+            }
+        </script>
+    </div>
+    </body>
+</html>

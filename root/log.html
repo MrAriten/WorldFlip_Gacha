@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+</head>
+<body>
+<br/>
+<br/>
+<div align="center"><font size="5"> <strong>登录</strong></font></div>
+<br/>
+<div class="login">
+    <form id="login-form" action="2CGISQL.cgi" method="post">
+        <div align="center">
+            <input type="text" name="user" placeholder="用户名" required="required">
+        </div>
+        <br/>
+        <div align="center">
+            <input type="password" name="password" placeholder="登录密码" required="required">
+        </div>
+        <br/>
+        <div align="center">
+            <button type="submit">确定</button>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript代码开始 -->
+<script>
+    // 获取表单对象
+    var form = document.getElementById("login-form");
+
+    // 在表单提交前拦截事件
+    form.addEventListener("submit", function(event) {
+        // 阻止表单提交
+        event.preventDefault();
+
+        // 获取输入框中的用户名和密码
+        var username = document.getElementsByName("user")[0].value;
+        //var password = document.getElementsByName("password")[0].value;
+
+        // 设置Cookie，将用户名和密码分别存储在Cookie中
+        document.cookie = "username=" + username;
+        //document.cookie = "password=" + password;
+
+        // 提交表单
+        form.submit();
+    });
+</script>
+<!-- JavaScript代码结束 -->
+</body>
+</html>

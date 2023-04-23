@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charSet="UTF-8">
+
+    <style>
+        body {
+            background-image: url("UI/kucun.png");
+            background-attachment: scroll;
+            background-position: left top;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            font-weight: bold;
+        }
+        img {
+            max-width: 50px;
+            max-height: 50px;
+        }
+    </style>
+</head>
+<body>
+<div id="username" style="position: fixed; top: 0; left: 0;">
+    <span style="border: 1px solid black; padding: 5px; font-size: 24px; background-color: black; color: white;"></span>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>角色图片</th>
+        <th>星级图片</th>
+        <th>角色数目</th>
+    </tr>
+    </thead>
+    <tbody id="roleList">
+    </tbody>
+</table>
+
+<script>
+    var interval = 50;
+    var stop = false;
+    function updateRoleList()
+    {
+        if(stop)
+        {
+            return;
+        }
+        var xhr = new XMLHttpRequest();
+        var username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        xhr.open('GET', '/getUserInfo_'+ encodeURIComponent(username));
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 3 && xhr.status === 200) {
+                var lines = xhr.responseText.split("\n");
+                var roles = {};
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    if (line.trim() !== "") {
+                        if (i % 2 === 0) {
+                            var roleUrl = line.trim();
+                            if(roleUrl == "NULL")
+                            {
+                                stop = true;
+                                return;
+                            }
+                            if (roleUrl in roles) {
+                                roles[roleUrl].count++;
+                            } else {
+                                roles[roleUrl] = { count: 1, starUrl: null };
+                            }
+                        } else {
+                            var starUrl = line.trim();
+                            roles[roleUrl].starUrl = starUrl;
+                        }
+                    }
+                }
+                xhr.abort();
+
+                var tbody = document.getElementById("roleList");
+                for (var roleUrl in roles) {
+                    var role = roles[roleUrl];
+                    var existingRow = tbody.querySelector(
+                        'tr[data-role-url="' + roleUrl + '"]'
+                    );
+                    if (existingRow) {
+                        var countCell = existingRow.querySelector(".count");
+                        countCell.textContent = role.count;
+                    } else {
+                        var newRow = document.createElement("tr");
+                        newRow.setAttribute("data-role-url", roleUrl);
+
+                        var imageCell = document.createElement("td");
+                        var image = document.createElement("img");
+                        image.src = roleUrl;
+                        imageCell.appendChild(image);
+
+                        var starCell = document.createElement("td");
+                        var starImage = document.createElement("img");
+                        starImage.src = role.starUrl;
+                        starCell.appendChild(starImage);
+
+                        var countCell = document.createElement("td");
+                        countCell.className = "count";
+                        countCell.textContent = role.count;
+
+                        newRow.appendChild(imageCell);
+                        newRow.appendChild(starCell);
+                        newRow.appendChild(countCell);
+
+                        tbody.appendChild(newRow);
+                    }
+                }
+                interval += 500;
+            } else {
+                console.error("请求失败：" + xhr.status);
+            }
+        };
+        xhr.send();
+    }
+
+    // 每 50 ms 更新一次数据
+    setInterval(updateRoleList, interval);
+</script>
+<script>
+    var username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+    // 在页面上展示用户名
+    var usernameSpan = document.querySelector("#username span");
+    if (username) {
+        usernameSpan.textContent = "当前用户：" + username;
+    }
+</script>
+</body>
+</html>
