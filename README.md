@@ -14,4 +14,4 @@
 
 ## Webbench压力测试结果
 
-![Alt text](.\webbench.png)
+![Alt text](./webbench.png)
