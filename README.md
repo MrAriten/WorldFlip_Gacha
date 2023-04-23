@@ -10,8 +10,8 @@
 
 ## 功能展示
 
-![SHOW](.\SHOW.gif)
+![Alt text](./SHOW.gif)
 
 ## Webbench压力测试结果
 
-![webbench](.\webbench.png)
+![Alt text](.\webbench.png)
