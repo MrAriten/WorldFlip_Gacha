@@ -41,8 +41,8 @@
         </table>
         <br/>
         <script>
+            var xmlhttp = new XMLHttpRequest();
             function getSingleImage() {
-                var xmlhttp = new XMLHttpRequest();
                 var username = document.cookie.replace(/(?:(?:^|.*;\s*)username\s*\=\s*([^;]*).*$)|^.*$/, "$1");
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 3 && this.status == 200) {
@@ -51,10 +51,11 @@
                         var urls = this.responseText.split("\n")
                         c_imgElement.src = urls[0];
                         s_imgElement.src = urls[1];
-                        xmlhttp.abort();
+                        //xmlhttp.abort();
                     }
                 };
                 xmlhttp.open("GET", "/getRandomImage_" + encodeURIComponent(username), true);
+                xmlhttp.setRequestHeader("Connection", "keep-alive");
                 xmlhttp.send();
             }
         </script>
