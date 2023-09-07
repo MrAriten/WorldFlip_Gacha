@@ -108,7 +108,7 @@ void sort_timer_lst::tick()//定时任务处理函数
         {
             break;
         }
-        tmp->cb_func(tmp->user_data);//当前定时器到期，则调用回调函数，执行定时事件
+        tmp->cb_func(tmp->user_data);//当前定时器到期，则调用回调函数，执行定时事件，回调函数定义在最下面！
         head = tmp->next;//将处理后的定时器从链表容器中删除，并重置头结点
         if (head)
         {
@@ -221,6 +221,7 @@ int *Utils::u_pipefd = 0;
 int Utils::u_epollfd = 0;
 
 class Utils;
+
 void cb_func(client_data *user_data)
 {
     epoll_ctl(Utils::u_epollfd, EPOLL_CTL_DEL, user_data->sockfd, 0);//删除非活动连接在socket上的注册事件

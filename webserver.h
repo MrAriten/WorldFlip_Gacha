@@ -1,16 +1,16 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <cassert>
-#include <sys/epoll.h>
+#include <sys/socket.h> //包括bind,accept,listen等socket编程函数以及接口数据结构
+#include <netinet/in.h> //网络大小端转换的API
+#include <arpa/inet.h> //提供IP地址转换函数
+#include <stdio.h> //c语言编译环境下的可以调用的标准输入输出函数
+#include <unistd.h> //提供对 POSIX 操作系统 API 的访问功能
+#include <errno.h> //定义了整数变量 errno，它是通过系统调用设置的，在错误事件中的某些库函数表明了什么发生了错误。
+#include <fcntl.h> //提供对文件控制的函数
+#include <stdlib.h> //某些结构体定义和宏定义，如EXIT_FAILURE、EXIT_SUCCESS等
+#include <cassert> //cassert是对assert.h头文件的封装，里面定义了一个assert函数，可以用于异常判断
+#include <sys/epoll.h> //和epoll相关的函数
 
 #include "./threadpool/threadpool.h"
 #include "./http/http_conn.h"

@@ -1,25 +1,25 @@
 #ifndef HTTPCONNECTION_H
 #define HTTPCONNECTION_H
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/epoll.h>
-#include <fcntl.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <assert.h>
-#include <sys/stat.h>
-#include <string.h>
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <stdarg.h>
-#include <errno.h>
-#include <sys/wait.h>
-#include <sys/uio.h>
-#include <map>
+#include <unistd.h> //unistd.h是C和C++程序设计语言中提供对POSIX操作系统API的访问功能的头文件
+#include <signal.h> //signal.h是C标准函数库中的信号处理部分
+#include <sys/types.h> //是Unix/Linux系统的基本系统数据类型的头文件,含有size_t,time_t,pid_t等类型
+#include <sys/epoll.h> //和epoll相关类
+#include <fcntl.h> //文件控制
+#include <sys/socket.h> //socket编程
+#include <netinet/in.h> //定义了一些网络编程所需的数据结构和常量SO_REUSEADDR、SO_KEEPALIVE还有网络字节序的转换
+#include <arpa/inet.h> //通常与 <netinet/in.h> 一起使用。用于处理网络地址转换、主机字节序和网络字节序之间的转换
+#include <assert.h> //函数和宏包括 NDEBUG 宏和 static_assert 宏等，它们用于更高级的断言和条件检查
+#include <sys/stat.h> //通常用于访问文件和目录的状态信息以及文件权限的相关操作。
+#include <string.h> //关于char*的操作，而不是C++中的string
+#include <pthread.h> //关于线程的操作
+#include <stdio.h> //标准输入输出库
+#include <stdlib.h> //用于进行各种与程序执行、内存分配、随机数生成和其他基本操作相关的任务
+#include <sys/mman.h> //包含了一组与内存映射（memory mapping）相关的函数、常量和数据结构。
+#include <stdarg.h> //供了一组宏和函数，用于处理可变数量的参数，通常用于实现可变参数的函数，如 printf 和 scanf
+#include <errno.h> //错误处理
+#include <sys/wait.h> //提供了一组与进程控制和等待相关的函数、宏和数据结构，通常用于处理子进程的状态信息以及等待子进程的终止。
+#include <sys/uio.h> //提供了一组与矢量I/O（Vector I/O）相关的函数和数据结构,readv writev 等
+#include <map> //定义了C++中的 std::map 类模板
 
 #include "../lock/locker.h"
 #include "../CGImysql/sql_connection_pool.h"

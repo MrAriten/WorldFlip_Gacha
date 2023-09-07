@@ -1,11 +1,11 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <stdio.h>
-#include <iostream>
+#include <stdio.h> //C的标准输入输出
+#include <iostream> //C++的输入输出流
 #include <string>
-#include <stdarg.h>
-#include <pthread.h>
+#include <stdarg.h> //stdarg是由standard（标准） arguments（参数）简化而来，主要目的为让函数能够接收可变参数。
+#include <pthread.h> //编程相关
 #include "block_queue.h"
 
 using namespace std;

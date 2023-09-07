@@ -1,10 +1,10 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 
-#include <list>
-#include <cstdio>
-#include <exception>
-#include <pthread.h>
+#include <list> //创建链表对象
+#include <cstdio> //C语言下的白标准IO
+#include <exception> //exception是c++标准库组件抛出的各种异常的基类
+#include <pthread.h> //线程相关库
 #include "../lock/locker.h"
 #include "../CGImysql/sql_connection_pool.h"
 

@@ -1,10 +1,19 @@
 #ifndef LOCKER_H
 #define LOCKER_H
 
-#include <exception>
-#include <pthread.h>
-#include <semaphore.h>
+#include <exception> //异常相关
+#include <pthread.h> //线程相关
+#include <semaphore.h> //信号量相关
 
+//为什么这里需要把信号，信号量和锁封装到类呢？
+//类中主要是Linux下三种锁进行封装，将锁的创建于销毁函数封装在类的构造与析构函数中，实现RAII机制
+/*
+RAII全称是“Resource Acquisition is Initialization”，直译过来是“资源获取即初始化”.
+在构造函数中申请分配资源，在析构函数中释放资源。因为C++的语言机制保证了，
+当一个对象创建的时候，自动调用构造函数，当对象超出作用域的时候会自动调用析构函数。
+所以，在RAII的指导下，我们应该使用类来管理资源，将资源和对象的生命周期绑定
+RAII的核心思想是将资源或者状态与对象的生命周期绑定，通过C++的语言机制，实现资源和状态的安全管理,智能指针是RAII最好的例子
+ */
 class sem //信号相关
 {
 public:
@@ -88,6 +97,12 @@ public:
         int ret = 0;
         //pthread_mutex_lock(&m_mutex);
         ret = pthread_cond_wait(&m_cond, m_mutex);
+        /*
+         * pthread_cond_timedwait用于阻塞当前线程，等待别的线程使用pthread_cond_signal()或pthread_cond_broadcast来唤醒它
+         * pthread_cond_wait() 必须与pthread_mutex配套使用。pthread_cond_wait()函数一进入wait状态就会自动release mutex。
+         * 当其他线程通过pthread_cond_signal()或pthread_cond_broadcast，把该线程唤醒，使pthread_cond_wait()通过（返回）时，
+         * 该线程又自动获得该mutex。
+         */
         //pthread_mutex_unlock(&m_mutex);
         return ret == 0;
     }

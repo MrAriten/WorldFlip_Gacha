@@ -7,9 +7,9 @@
 #define BLOCK_QUEUE_H
 
 #include <iostream>
-#include <stdlib.h>
-#include <pthread.h>
-#include <sys/time.h>
+#include <stdlib.h> //stdlib 头文件即standard library标准库头文件。类型例如size_t、wchar_t、div_t、ldiv_t和lldiv_t；
+#include <pthread.h> //线程相关
+#include <sys/time.h> //时间相关
 #include "../lock/locker.h"
 using namespace std;
 
@@ -130,7 +130,7 @@ public:
         if (m_size >= m_max_size)
         {
 
-            m_cond.broadcast();
+            m_cond.broadcast(); //广播条件变量，唤醒等待这个变量的线程
             m_mutex.unlock();
             return false;
         }

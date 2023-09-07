@@ -1,6 +1,7 @@
 #ifndef LST_TIMER
 #define LST_TIMER
 
+//这些头文件在http里也有解释
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -77,6 +78,8 @@ public:
     int setnonblocking(int fd);
 
     //将内核事件表注册读事件，ET模式，选择开启EPOLLONESHOT
+    //EPOLLONESHOT标志的主要目的是防止多个线程或进程同时操作同一个套接字，避免出现竞态条件（race conditions）。
+    // 一旦一个线程或进程成功处理了套接字上的事件，EPOLLONESHOT标志就会被触发，然后需要显式地重新注册该套接字以监视下一次事件。
     void addfd(int epollfd, int fd, bool one_shot, int TRIGMode);
 
     //信号处理函数
