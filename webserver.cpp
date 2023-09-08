@@ -138,7 +138,7 @@ void WebServer::eventListen()
 
     //epoll创建内核事件表
     epoll_event events[MAX_EVENT_NUMBER];
-    m_epollfd = epoll_create(5);
+    m_epollfd = epoll_create(5); //epoll_creat的参数是不起作用的，象征性的
     assert(m_epollfd != -1);
 
     utils.addfd(m_epollfd, m_listenfd, false, m_LISTENTrigmode);

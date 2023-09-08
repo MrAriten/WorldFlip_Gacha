@@ -181,7 +181,7 @@ void http_conn::init()
 //关于主从状态机的解析，还是得看推文
 //https://mp.weixin.qq.com/s/wAQHU-QZiRt1VACMZZjNlw
 
-http_conn::LINE_STATUS http_conn::parse_line()//从状态机读取一行，分析是请求报文的哪一部分
+http_conn::LINE_STATUS http_conn::parse_line()//从状态机读取一行，无需分析是请求报文的哪一部分，交由主状态机判断
 {
     char temp;
     for (; m_checked_idx < m_read_idx; ++m_checked_idx)
@@ -223,12 +223,20 @@ bool http_conn::read_once()
     }
     int bytes_read = 0;
 
-    //LT读取数据
-    if (0 == m_TRIGMode)
+
+    //ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+    /*
+    sockfd：要接收数据的套接字文件描述符。
+    buf：用于接收数据的缓冲区的地址。
+    len：接收数据的最大字节数。
+    flags：控制接收操作的标志。通常可以设置为 0。
+    recv 函数的功能是从指定的套接字 sockfd 接收数据，并将数据存储到 buf 所指向的缓冲区中，最多接收 len 字节。
+    函数返回接收到的字节数，如果出错则返回 -1。如果返回值为 0，则表示远程端已经关闭连接
+     */
+    if (0 == m_TRIGMode)//LT读取数据，只先读一次，能都多少是多少
     {
         bytes_read = recv(m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0);
         m_read_idx += bytes_read;
-
         if (bytes_read <= 0)
         {
             return false;
@@ -236,10 +244,9 @@ bool http_conn::read_once()
 
         return true;
     }
-    //ET读数据
     else
     {
-        while (true)
+        while (true)//ET读数据，全部读完
         {
             bytes_read = recv(m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0);
             if (bytes_read == -1)
@@ -302,7 +309,7 @@ http_conn::HTTP_CODE http_conn::parse_request_line(char *text)
     //当url为/时，显示判断界面
     if (strlen(m_url) == 1)
         strcat(m_url, "judge.html");
-    m_check_state = CHECK_STATE_HEADER;
+    m_check_state = CHECK_STATE_HEADER; //请求行解析完后转移到请求头部
 
     std::string  username = m_url;
     return NO_REQUEST;
