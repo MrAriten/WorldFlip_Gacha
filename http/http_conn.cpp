@@ -841,7 +841,7 @@ bool http_conn::process_write(HTTP_CODE ret)//根据do_request的状态，调用
             break;
         }
         //前三种都是报错机制，下面这个是文件请求，200
-        case FILE_REQUEST:
+        case FILE_REQUEST://我不知道为什么File_request要单独自己写传输方式，其实如果发送url的话，会自动返回资源的，这里变成手动写了
         {
             //通过io向量机制iovec，声明两个iovec，第一个指向m_write_buf，第二个指向mmap的地址m_file_address
             //iovec是一个结构体，里面有两个元素，指针成员iov_base指向一个缓冲区，这个缓冲区是存放的是writev将要发送的数据

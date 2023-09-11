@@ -298,7 +298,7 @@ void WebServer::dealwithread(int sockfd)
 
         while (true)
         {
-            if (1 == users[sockfd].improv)
+            if (1 == users[sockfd].improv) //improv代表在线程池已经被处理过了，可以看threadpool的代码
             {
                 if (1 == users[sockfd].timer_flag)
                 {
