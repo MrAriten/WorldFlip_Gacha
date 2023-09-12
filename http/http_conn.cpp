@@ -714,7 +714,6 @@ bool http_conn::process_write(HTTP_CODE ret)//根据do_request的状态，调用
     {
         case RANDOM_REQUEST:
         {
-
             add_status_line(200, ok_200_title);
             add_response("Content-Type:%s\r\n", "image/png");
             add_response("Connection:%s\r\n","close");
