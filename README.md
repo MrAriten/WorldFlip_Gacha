@@ -15,3 +15,50 @@
 ## Webbench压力测试结果
 
 ![Alt text](./webbench.png)
+
+## 项目部署
+
+在项目目录下创建Server_log文件夹
+
+```bash
+mkdir Server_log
+```
+
+安装好mysql后，输入以下命令初始化数据库
+
+```mysql
+create database yourdb;
+
+use yourdb;
+
+CREATE TABLE user(
+    username char(50) NULL,
+    passwd char(50) NULL
+)ENGINE=InnoDB;
+
+ALTER TABLE user MODIFY username char(50) NOT NULL;
+ALTER TABLE user ADD CONSTRAINT unique_username UNIQUE (username);
+#设置NOT NULL和唯一列，否则gacha_logs不允许username作为外键
+
+CREATE TABLE gacha_logs (
+                            id INT(11) NOT NULL AUTO_INCREMENT,
+                            username char(50) NOT NULL,
+                            gacha_character TEXT NOT NULL,
+                            gacha_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                            PRIMARY KEY (id),
+                            FOREIGN KEY (username) REFERENCES user(username)
+);
+```
+
+编译
+
+```bash
+sh ./build.sh
+```
+
+运行
+
+```bash
+./server
+```
+
